@@ -11,7 +11,7 @@ function App() {
   const res = async () => {
     try {
       const functions = getFunctions(getApp(), "asia-east2");
-      const helloWorld = httpsCallable(functions, "helloWorld2");
+      const helloWorld = httpsCallable(functions, "helloWorld");
       const response = await helloWorld({ message: "nada" });
       console.log("response", response.data);
       return response.data;
