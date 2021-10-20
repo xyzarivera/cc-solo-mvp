@@ -6,7 +6,6 @@ admin.initializeApp();
 
 exports.helloWorld = functions
     .region("asia-east2")
-    .https.onRequest((request, response) => {
-      functions.logger.info("Hello logs!", {structuredData: true});
-      response.send("Hello from Firebase!");
+    .https.onCall((payload, context) => {
+      return {data: "Hello from Firebase"};
     });
