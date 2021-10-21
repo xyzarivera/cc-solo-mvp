@@ -1,50 +1,59 @@
-import { useEffect } from "react";
 import logo from "./logo.svg";
 import "./App.css";
 import Navbar from "./components/Navbar";
+import Login from "./components/Login";
 import Home from "./components/Home";
 import Form from "./components/Form";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { getApp } from "firebase/app";
+import Signup from "./components/Signup";
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Redirect
+} from 'react-router-dom';
+import { AuthContextProvider, useAuthState } from './firebase';
+
+const AuthenticatedRoute = ({ component: C, ...props }) => {
+  const { isAuthenticated } = useAuthState()
+  console.log(`AuthenticatedRoute: ${isAuthenticated}`)
+  return (
+    <Route
+      {...props}
+      render={routeProps =>
+        isAuthenticated ? <C {...routeProps} /> : <Redirect to="/login" />
+      }
+    />
+  )
+}
+
+const UnauthenticatedRoute = ({ component: C, ...props }) => {
+  const { isAuthenticated } = useAuthState()
+  console.log(`UnauthenticatedRoute: ${isAuthenticated}`)
+  return (
+    <Route
+      {...props}
+      render={routeProps =>
+        !isAuthenticated ? <C {...routeProps} /> : <Redirect to="/" />
+      }
+    />
+  )
+}
 
 function App() {
-  const res = async () => {
-    try {
-      const functions = getFunctions(getApp(), "asia-east2");
-      const helloWorld = httpsCallable(functions, "helloWorld");
-      const response = await helloWorld({ message: "nada" });
-      console.log("response", response.data);
-      return response.data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
-  useEffect(() => {
-    res();
-  }, []);
-
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          hello
-        </a>
-        <Navbar />
-        <Home />
-        <Form />
-      </header>
-    </div>
-  );
+    <AuthContextProvider>
+      <Router>
+        <div>
+          <Link to="/">Home</Link> | <Link to="/login">Login</Link> |{' '}
+          <Link to="/signup">SignUp</Link> 
+        </div>
+        <AuthenticatedRoute exact path="/form" component={Form} />
+        <AuthenticatedRoute exact path="/" component={Home} />
+        <UnauthenticatedRoute exact path="/login" component={Login} />
+        <UnauthenticatedRoute exact path="/signup" component={Signup} />
+      </Router>
+    </AuthContextProvider>
+  )
 }
 
 export default App;
