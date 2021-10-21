@@ -20,8 +20,47 @@ export const Home = () => {
     }
   };
 
+  const write = async () => {
+    try {
+      const functions = getFunctions(getApp(), "asia-east2");
+      const createEntry = httpsCallable(functions, "createEntry");
+      const response = await createEntry();
+      console.log("createEntry", response.data);
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const readAll = async () => {
+    try {
+      const functions = getFunctions(getApp(), "asia-east2");
+      const getAllStandupEntries = httpsCallable(functions, "getAllStandupEntries");
+      const response = await getAllStandupEntries();
+      console.log("getAllStandupEntries", response.data);
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const read = async () => {
+    try {
+      const functions = getFunctions(getApp(), "asia-east2");
+      const getStandupEntry = httpsCallable(functions, "getStandupEntry");
+      const response = await getStandupEntry();
+      console.log("getStandupEntry", response.data);
+      return response.data;
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
-    res();
+    // res();
+    // write();
+    // readAll();
+    // read();
   }, []);
 
   return (
