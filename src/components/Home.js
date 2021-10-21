@@ -57,10 +57,10 @@ export const Home = () => {
   };
 
   useEffect(() => {
-    // res();
-    // write();
-    // readAll();
-    // read();
+    res();
+    write();
+    readAll();
+    read();
   }, []);
 
   return (
