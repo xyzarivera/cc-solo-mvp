@@ -1,8 +1,6 @@
 import { useCallback } from 'react'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
 import { useEffect } from "react";
-import { getFunctions, httpsCallable } from "firebase/functions";
-import { getApp } from "firebase/app";
 
 const Login = () => {
   const handleSubmit = useCallback(async e => {
@@ -17,20 +15,8 @@ const Login = () => {
     }
   }, [])
 
-  const res = async () => {
-    try {
-      const functions = getFunctions(getApp(), "asia-east2");
-      const helloWorld = httpsCallable(functions, "helloWorld");
-      const response = await helloWorld({ message: "nada" });
-      console.log("response", response.data);
-      return response.data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
-
   useEffect(() => {
-    res();
+
   }, []);
 
   return (
