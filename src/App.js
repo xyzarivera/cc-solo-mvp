@@ -3,6 +3,7 @@ import Login from "./components/Login";
 import Home from "./components/Home";
 import Form from "./components/Form";
 import Signup from "./components/Signup";
+import Entry from "./components/Entry"
 import {
   BrowserRouter as Router,
   Route,
@@ -42,11 +43,11 @@ function App() {
     <AuthContextProvider>
       <Router>
         <div>
-          <Link to="/">Home</Link> | <Link to="/login">Login</Link> |{' '}
-          <Link to="/signup">SignUp</Link> 
+          <Link to="/">Home</Link> | <Link to="/login">Login</Link> | <Link to="/signup">SignUp</Link> 
         </div>
-        <AuthenticatedRoute exact path="/form" component={Form} />
         <AuthenticatedRoute exact path="/" component={Home} />
+        <AuthenticatedRoute exact path="/form" component={Form} />
+        <AuthenticatedRoute exact path="/entry/:id" component={Entry} />
         <UnauthenticatedRoute exact path="/login" component={Login} />
         <UnauthenticatedRoute exact path="/signup" component={Signup} />
       </Router>
