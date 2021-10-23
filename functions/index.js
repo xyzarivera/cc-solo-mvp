@@ -3,7 +3,6 @@ const logger = functions.logger;
 
 // The Firebase Admin SDK to access Firestore.
 const admin = require("firebase-admin");
-const { deepCopy } = require("@firebase/util");
 admin.initializeApp();
 
 exports.helloWorld = functions
@@ -89,18 +88,18 @@ exports.createEntry = functions
     logger.info(`user_id: ${user_id} is creating an entry`);
 
     const standup = {
-      did: "test",
-      do: "test",
-      blocker: "test",
+      did: payload.standup_did,
+      do: payload.standup_do,
+      blocker: payload.standup_blocker,
     };
-    const timestamp = Date.now();
+    const timestamp = new Date().toISOString();
     try {
       const write = await admin
         .firestore()
         .collection("standup_entries")
         .add({ standup: standup, timestamp: timestamp, user_id: user_id });
       logger.info({ result: `Message with ID: ${write.id} added.` });
-      return { code: 200, message: "Successful create." };
+      return { code: 200, message: "Successful entry creation." };
     } catch (err) {
       logger.error({
         code: err.code,
