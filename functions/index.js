@@ -18,7 +18,7 @@ exports.helloWorld = functions
     const user_id = context.auth.token.uid;
 
     logger.info(`user ${user_id} has logged in`);
-    return { code: 200, message: "Successful test." };
+    return { message: "Successful test." };
   });
 
 exports.getAllStandupEntries = functions
@@ -39,13 +39,17 @@ exports.getAllStandupEntries = functions
     let entries = []
 
     entriesRef.forEach((doc) => {
-      entries.push(doc.data());
-      console.log(doc.data())
+      const data = {
+        id: doc.id,
+        timestamp: doc.data().timestamp
+      }
+      entries.push(data);
+      console.log(data)
     })
 
 
     logger.info(`user ${user_id} has accessed their entries`);
-    return { code: 200, message: "Successful read.", data: entries };
+    return { message: "Successful read.", data: entries };
   });
 
 exports.getStandupEntry= functions
@@ -59,9 +63,10 @@ exports.getStandupEntry= functions
       );
     }
     const user_id = context.auth.token.uid;
+    console.log(payload.id)
 
     const db = admin.firestore();
-    const entryQuery = db.collection('standup_entries').doc("E8MXaOyoakaIpyTTP62W");
+    const entryQuery = db.collection('standup_entries').doc(payload.id);
     const entryRef = await entryQuery.get();
 
     if (!entryRef.exists) {
@@ -71,7 +76,7 @@ exports.getStandupEntry= functions
     }
 
     logger.info(`user ${user_id} has accessed their entries`);
-    return { code: 200, message: "Successful read.", data: entryRef.data() };
+    return { message: "Successful read.", data: entryRef.data() };
   });
 
 exports.createEntry = functions
@@ -99,7 +104,7 @@ exports.createEntry = functions
         .collection("standup_entries")
         .add({ standup: standup, timestamp: timestamp, user_id: user_id });
       logger.info({ result: `Message with ID: ${write.id} added.` });
-      return { code: 200, message: "Successful entry creation." };
+      return { message: "Successful entry creation." };
     } catch (err) {
       logger.error({
         code: err.code,
