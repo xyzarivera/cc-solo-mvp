@@ -1,6 +1,5 @@
 import { useCallback } from 'react'
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth'
-import { useEffect } from "react";
 
 const Login = () => {
   const handleSubmit = useCallback(async e => {
@@ -14,10 +13,6 @@ const Login = () => {
       alert(e.message)
     }
   }, [])
-
-  useEffect(() => {
-
-  }, []);
 
   return (
     <>
