@@ -47,12 +47,7 @@ const Form = () => {
         <br />
         <label for="standup_do">What will you do today?</label>
         <br />
-        <textarea
-          id="standup_do"
-          name="standup_do"
-          type="password"
-          required="required"
-        />
+        <textarea id="standup_do" name="standup_do" required="required" />
         <br />
         <label for="standup_blocker">
           What (if anything) is blocking your progress?
@@ -61,7 +56,6 @@ const Form = () => {
         <textarea
           id="standup_blocker"
           name="standup_blocker"
-          type="password"
           required="required"
         />
         <br />
