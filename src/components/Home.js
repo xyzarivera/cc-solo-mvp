@@ -54,9 +54,9 @@ export const Home = () => {
           <div>
             {request_state === "fulfilled" &&
               entries.map((entry) => (
-                <div>
+                <div key={entry.id}>
                   <Link key={entry.timestamp} to={`entry/${entry.id}`}>
-                    {moment(entry.timidestamp)
+                    {moment(entry.timestamp)
                       .format("MMM DD, YYYY hh:mm A")
                       .toString()}
                   </Link>
