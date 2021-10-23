@@ -31,28 +31,13 @@ export const Home = () => {
     }
   };
 
-  // const read = async () => {
-  //   try {
-  //     const functions = getFunctions(getApp(), "asia-east2");
-  //     const getStandupEntry = httpsCallable(functions, "getStandupEntry");
-  //     const response = await getStandupEntry();
-  //     console.log("getStandupEntry", response.data);
-  //     return response.data;
-  //   } catch (err) {
-  //     console.error(err);
-  //   }
-  // };
-
   useEffect(() => {
-    // res();
     readAll();
-    // read();
   }, []);
 
   return (
     <>
-      {request_state === "pending" ? "loading" : ""}
-      {request_state === "rejected" ? "refresh" : ""}
+      {console.log(request_state)}
       <div>
         <Link to="/form">Create Entry</Link>
       </div>
@@ -60,21 +45,26 @@ export const Home = () => {
         <h1>Welcome {user?.email}</h1>
         <button onClick={() => signOut(getAuth())}>Sign out</button>
       </div>
-      {request_state === "fulfilled" ? (
-        <div>
-          {entries.length !== 0 ? (
-            <div>
-              {entries.map((entry) => (
-                <div><Link key={entry.timestamp}
-                to={`entry/${entry.timestamp}`}>{ moment(entry.timestamp).format('MMM DD, YYYY hh:mm A').toString()}</Link>
+      {request_state === "pending" ? "loading" : ""}
+      {request_state === "rejected" ? "please refresh" : ""}
+      {request_state === "fulfilled" && entries.length === 0
+        ? "You dont have an entry yet"
+        : <div>
+        {entries.length !== 0 ? (
+          <div>
+            {request_state === "fulfilled" &&
+              entries.map((entry) => (
+                <div key={entry.id}>
+                  <Link key={entry.timestamp} to={`entry/${entry.id}`}>
+                    {moment(entry.timestamp)
+                      .format("MMM DD, YYYY hh:mm A")
+                      .toString()}
+                  </Link>
                 </div>
               ))}
-            </div>
-          ) : null}
-        </div>
-      ) : (
-        ""
-      )}
+          </div>
+        ) : null}
+      </div>}
     </>
   );
 };
