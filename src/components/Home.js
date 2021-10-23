@@ -4,25 +4,13 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 import { getApp } from "firebase/app";
 import { getAuth, signOut } from "firebase/auth";
 import { useAuthState } from "../firebase";
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link } from "react-router-dom";
 import moment from "moment";
 
 export const Home = () => {
   const { user } = useAuthState();
   const [entries, setEntries] = useState([]);
   const [request_state, setRequestState] = useState("idle");
-
-  const res = async () => {
-    try {
-      const functions = getFunctions(getApp(), "asia-east2");
-      const helloWorld = httpsCallable(functions, "helloWorld");
-      const response = await helloWorld({ message: "nada" });
-      console.log("response", response.data);
-      return response.data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
 
   const readAll = async () => {
     setRequestState("pending");
@@ -43,23 +31,22 @@ export const Home = () => {
     }
   };
 
-  const read = async () => {
-    try {
-      const functions = getFunctions(getApp(), "asia-east2");
-      const getStandupEntry = httpsCallable(functions, "getStandupEntry");
-      const response = await getStandupEntry();
-      console.log("getStandupEntry", response.data);
-      return response.data;
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  // const read = async () => {
+  //   try {
+  //     const functions = getFunctions(getApp(), "asia-east2");
+  //     const getStandupEntry = httpsCallable(functions, "getStandupEntry");
+  //     const response = await getStandupEntry();
+  //     console.log("getStandupEntry", response.data);
+  //     return response.data;
+  //   } catch (err) {
+  //     console.error(err);
+  //   }
+  // };
 
   useEffect(() => {
     // res();
     readAll();
     // read();
-    console.log({ entries });
   }, []);
 
   return (
